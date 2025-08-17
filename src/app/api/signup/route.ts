@@ -61,10 +61,10 @@ export async function POST(request: NextRequest) {
                 username,
                 email,
                 password: hashedPassword,
-                verifyCode: '123456',
+                verifyCode: verifyCode,
                 verifyCodeExpiry: expiryDate,
                 isVerified: false,
-                isAcceptingMessage: true,
+                isAcceptingMessages: true,
                 messages: [],
             });
             
