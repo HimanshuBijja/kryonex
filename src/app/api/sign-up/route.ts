@@ -40,6 +40,8 @@ export async function POST(request: NextRequest) {
                 return NextResponse.json({
                     success: false,
                     message: 'Email already verified'
+                },{
+                    status: 400
                 })
             }else{
                 const hashedPassword = await bcrypt.hash(password, 10);
