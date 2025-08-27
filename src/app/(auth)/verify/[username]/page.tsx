@@ -24,6 +24,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
+import { REGEXP_ONLY_DIGITS } from "input-otp";
 
 export default function VerifyAccountPage() {
   const router = useRouter();
@@ -60,9 +61,10 @@ export default function VerifyAccountPage() {
           >
             <FormField
               control={form.control}
+              
               name="code"
               render={({ field }) => (
-                <FormItem className="flex flex-col justify-center">
+                <FormItem className="flex flex-col justify-center items-center">
                   <div className="flex flex-col">
                     <h1 className="text-2xl text-center font-bold">
                       Enter Otp
@@ -73,10 +75,10 @@ export default function VerifyAccountPage() {
                     Email.
                   </FormDescription>
                   <FormControl>
-                    <InputOTP maxLength={6} {...field}>
+                    <InputOTP maxLength={6} {...field} pattern={REGEXP_ONLY_DIGITS}>
                       {/* <div className="flex flex-row items-center justify-center "> */}
                         <InputOTPGroup>
-                          <InputOTPSlot index={0} />
+                          <InputOTPSlot index={0}  />
                           <InputOTPSlot index={1} />
                           <InputOTPSlot index={2} />
                         </InputOTPGroup>
@@ -89,7 +91,7 @@ export default function VerifyAccountPage() {
                       {/* </div> */}
                     </InputOTP>
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-center" />
                 </FormItem>
               )}
             />
