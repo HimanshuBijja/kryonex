@@ -67,7 +67,7 @@ export default function VerifyAccountPage() {
       setLastFailedOtp("");
 
       toast.success(response.data.message);
-      // router.push("/auth/sign-in"); //TODO uncomment after making sign-in page
+      router.push("/sign-in"); //TODO uncomment after making sign-in page
     } catch (error) {
       console.error("Error in verify page :", error);
       const axiosError = error as AxiosError<ApiResponse>;
@@ -126,7 +126,7 @@ export default function VerifyAccountPage() {
                     </InputOTP>
                   </FormControl>
                   {
-                    isSubmittingDisabled && <p className="text-red-500 text-sm">Incorrect Otp, Please try again.</p>
+                    hasFailedSubmission && <p className="text-red-500 text-sm">Incorrect Otp, Please try again.</p>
                   }
                   <FormMessage className="text-center" />
                 </FormItem>

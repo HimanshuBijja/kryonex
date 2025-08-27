@@ -1,23 +1,23 @@
-import dbConnect from '@/lib/dbConnect';
-import UserModel from '@/model/User';
-import bcrypt from 'bcryptjs';
-import { NextAuthOptions } from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import Credentials from 'next-auth/providers/credentials';
-import Google from 'next-auth/providers/google';
-import { is } from 'zod/locales';
+import dbConnect from "@/lib/dbConnect";
+import UserModel from "@/model/User";
+import bcrypt from "bcryptjs";
+import { NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import Credentials from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google";
+import { is } from "zod/locales";
 
 export const authOptions: NextAuthOptions = {
     providers: [
         CredentialsProvider({
             // The name to display on the sign in form (e.g. "Sign in with...")
-            name: 'Credentials',
+            name: "Credentials",
             credentials: {
                 email: {
-                    label: 'Email',
-                    type: 'text',
+                    label: "Email",
+                    type: "text",
                 },
-                password: { label: 'Password', type: 'password' },
+                password: { label: "Password", type: "password" },
             },
             async authorize(credentials, req): Promise<any> {
                 //connect db
@@ -25,23 +25,26 @@ export const authOptions: NextAuthOptions = {
                 try {
                     //ccheck if user exists
                     const user = await UserModel.findOne({
-                        $or: [{ email: credentials?.email }],
+                        $or: [
+                            { email: credentials?.email },
+                            { username: credentials?.email },
+                        ],
                     });
                     if (!user) {
-                        throw new Error('No user found with this email');
+                        throw new Error("No user found with this email");
                     }
                     //ccheck if user isverified
 
-                    if (user.isVerified) {
-                        throw new Error('User is not verified');
+                    if (!user.isVerified) {
+                        throw new Error("User is not verified");
                     }
                     //ccheck if password is correct
-                    const verifyPassword = bcrypt.compare(
-                        credentials?.password || '',
+                    const verifyPassword = await bcrypt.compare(
+                        credentials?.password || "",
                         user.password,
                     );
                     if (!verifyPassword) {
-                        throw new Error('Invalid password');
+                        throw new Error("Invalid password");
                     } else {
                         return user;
                     }
@@ -73,11 +76,11 @@ export const authOptions: NextAuthOptions = {
         },
     },
     pages: {
-        signIn: '/sign-in',
+        signIn: "/sign-in",
     },
     //strategy
     session: {
-        strategy: 'jwt',
+        strategy: "jwt",
     },
     //secret NEXTAUTH_SECRET
     secret: process.env.NEXTAUTH_SECRET, //TODO add variable in .env

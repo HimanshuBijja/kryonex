@@ -180,7 +180,7 @@ export default function SignInPage() {
         </Form>
         <div className="py-2 text-sm">
           already have an account?{" "}
-          <Link href="/login">
+          <Link href="/sign-in">
             <span className="text-blue-500 hover:underline">Sign in</span>
           </Link>
         </div>
