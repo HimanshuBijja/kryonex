@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
-import { useDebounceValue } from "usehooks-ts";
+import { useDebounceCallback, useDebounceValue } from "usehooks-ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signUpSchema } from "@/schemas/signUpSchema";
 import z from "zod";
@@ -23,6 +23,7 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { Loader2 } from "lucide-react";
+import Link from "next/link";
 
 export default function SignInPage() {
   const [username, setUsername] = useState("");
@@ -31,7 +32,7 @@ export default function SignInPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
-  const debouncedUsername = useDebounceValue(username, 500);
+  const debounced = useDebounceCallback(setUsername, 500);
 
   //zod Implementation
 
@@ -47,13 +48,13 @@ export default function SignInPage() {
 
   useEffect(() => {
     const checkUsernameUnique = async () => {
-      if (debouncedUsername) {
+      if (username) {
         setIsCheckingUsername(true);
         setUsernameMessage("");
 
         try {
           const response = await axios.get(
-            `/api/check-username-unique?username=${debouncedUsername}`,
+            `/api/check-username-unique?username=${username}`,
           );
           setUsernameMessage(response.data.message);
         } catch (error) {
@@ -68,7 +69,7 @@ export default function SignInPage() {
     };
 
     checkUsernameUnique();
-  }, [debouncedUsername]);
+  }, [username]);
 
   const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
     setIsSubmitting(true);
@@ -83,7 +84,7 @@ export default function SignInPage() {
         // },
       });
       // router.push(`/verify/${data.username}`);
-      router.push(`/verify/${username}`); // check if both are same
+      // router.push(`/verify/${username}`); // check if both are same
       setIsSubmitting(false);
     } catch (error) {
       console.error("Error signing up user:", error);
@@ -98,69 +99,89 @@ export default function SignInPage() {
   };
 
   return (
-    <div>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
-            name="username"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="username"
-                    {...field}
-                    onChange={(e) => {
-                      field.onChange(e);
-                      setUsername(e.target.value);
-                    }}
-                  />
-                </FormControl>
+    <section className="py-24 max-w-xl mx-auto px-4 container">
+      <div className="w-full px-6 border-2 rounded-lg py-10 flex flex-col justify-center items-center">
+        <Header />
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-8 w-full"
+          >
+            <FormField
+              name="username"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Username</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="username"
+                      {...field}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        debounced(e.target.value);
+                      }}
+                    />
+                  </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="email"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input placeholder="email" {...field} />
-                </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="email"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input placeholder="email" {...field} />
+                  </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="password"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input placeholder="password" type="password" {...field} />
-                </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="password"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input placeholder="password" type="password" {...field} />
+                  </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit" disabled={isSubmitting}>
-            {
-              isSubmitting ? (
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button className="w-full" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? (
                 <>
                   <Loader2 className="animate-spin" /> please wait
                 </>
-              ) : "Submit"
-            }
-          </Button>
-        </form>
-      </Form>
-    </div>
+              ) : (
+                "Sign Up"
+              )}
+            </Button>
+          </form>
+        </Form>
+        <div className="py-2">
+          already have an account?{" "}
+          <Link href="/login">
+            <span className="text-blue-500 hover:underline">Sign in</span>
+          </Link>
+        </div>
+      </div>
+    </section>
   );
 }
+
+const Header = () => {
+  return (
+    <header className="pb-6 ">
+      <h1 className="text-3xl font-bold text-center">Sign Up</h1>
+    </header>
+  );
+};

@@ -7,7 +7,7 @@ export const usernameValidation = z
     .trim()
     .regex(
         /(?!.*[\.\_]{2,})^[a-zA-Z0-9\.\_]{2,20}$/,
-        "Username must be alphanumeric and can contain '.' and '_'",
+        "Username may contain letters, numbers, underscores ( _ ) and periods ( . ) only.",
     );
 
 export const signUpSchema = z.object({
