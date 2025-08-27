@@ -32,7 +32,7 @@ export default function SignInPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
-  const debounced = useDebounceCallback(setUsername, 500);
+  const debounced = useDebounceCallback(setUsername, 1000);
 
   //zod Implementation
 
@@ -123,8 +123,19 @@ export default function SignInPage() {
                       }}
                     />
                   </FormControl>
+                  {isCheckingUsername && <Loader2 className="animate-spin" />}
+                  <p
+                    className={`text-sm px-2 ${
+                      usernameMessage === "Username is available"
+                        ? "text-green-500"
+                        : "text-red-500"
+                    }`}
+                  >
+                    {/* {usernameMessage} */}
+                     {usernameMessage}
+                  </p>
 
-                  <FormMessage />
+                  {/* <FormMessage /> */}
                 </FormItem>
               )}
             />
@@ -149,7 +160,7 @@ export default function SignInPage() {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="password" type="password" {...field} />
+                    <Input placeholder="password" type="password"  {...field} />
                   </FormControl>
 
                   <FormMessage />
@@ -167,7 +178,7 @@ export default function SignInPage() {
             </Button>
           </form>
         </Form>
-        <div className="py-2">
+        <div className="py-2 text-sm">
           already have an account?{" "}
           <Link href="/login">
             <span className="text-blue-500 hover:underline">Sign in</span>
