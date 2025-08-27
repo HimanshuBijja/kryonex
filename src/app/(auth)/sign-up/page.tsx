@@ -135,7 +135,7 @@ export default function SignInPage() {
                      {usernameMessage}
                   </p>
 
-                  {/* <FormMessage /> */}
+                  <FormMessage />
                 </FormItem>
               )}
             />

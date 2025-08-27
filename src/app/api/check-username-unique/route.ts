@@ -35,7 +35,8 @@ export async function GET(request: NextRequest) {
             const usernameError = result.error.format().username?._errors || []
             return NextResponse.json({
                 success : false,
-                message : usernameError.length > 0 ? usernameError.join(", ") : "Invalid username/ query parameters"
+                // message : usernameError.length > 0 ? usernameError.join(", ") : "Invalid username/ query parameters"
+                message :"Invalid username"
             },{
                 status: 400
             })
