@@ -84,7 +84,7 @@ export default function SignInPage() {
         // },
       });
       // router.push(`/verify/${data.username}`);
-      // router.push(`/verify/${username}`); // check if both are same
+      router.push(`/verify/${username}`); // check if both are same
       setIsSubmitting(false);
     } catch (error) {
       console.error("Error signing up user:", error);
