@@ -25,21 +25,46 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
+import { useEffect, useState } from "react";
+import { Loader2 } from "lucide-react";
+import { set } from "mongoose";
 
 export default function VerifyAccountPage() {
   const router = useRouter();
   const param = useParams<{ username: string }>();
 
+  const [isSubmittingForm, setIsSubmittingForm] = useState(false);
+  const [lastFailedOtp, setLastFailedOtp] = useState<string>("");
+  const [hasFailedSubmission, setHasFailedSubmission] = useState(false);
+
+  const [otp, setOtp] = useState<string>("");
+
+
   const form = useForm<z.infer<typeof verifySchema>>({
     resolver: zodResolver(verifySchema),
   });
 
+  const currentOtp = form.watch("code");
+
+  const hasOtpChangedAfterFailure = hasFailedSubmission && currentOtp !== lastFailedOtp;
+
+//   useEffect(() => {
+//     if (hasOtpChangedAfterFailure) {
+//         setHasFailedSubmission(false);
+//         setLastFailedOtp("");
+//     }
+//   }, [hasOtpChangedAfterFailure]);
+
   const onSubmit = async (data: z.infer<typeof verifySchema>) => {
     try {
+      setIsSubmittingForm(true);
+    //   setLastFailedOtp("");
       const response = await axios.post(`/api/verify-code`, {
         username: param.username,
         code: data.code,
       });
+      setHasFailedSubmission(false);
+      setLastFailedOtp("");
 
       toast.success(response.data.message);
       // router.push("/auth/sign-in"); //TODO uncomment after making sign-in page
@@ -49,8 +74,14 @@ export default function VerifyAccountPage() {
       let errorMessage =
         axiosError.response?.data.message ?? "Something went wrong";
       toast.error(errorMessage);
+      setLastFailedOtp(data.code);
+        setHasFailedSubmission(true);
+    } finally {
+      setIsSubmittingForm(false);
     }
   };
+
+  const isSubmittingDisabled = isSubmittingForm || (hasFailedSubmission && !hasOtpChangedAfterFailure);
   return (
     <section className="py-24 max-w-sm container mx-auto px-2">
       <div className="px-4 flex flex-col justify-center items-center border-2 rounded-lg py-10">
@@ -61,7 +92,6 @@ export default function VerifyAccountPage() {
           >
             <FormField
               control={form.control}
-              
               name="code"
               render={({ field }) => (
                 <FormItem className="flex flex-col justify-center items-center">
@@ -75,27 +105,46 @@ export default function VerifyAccountPage() {
                     Email.
                   </FormDescription>
                   <FormControl>
-                    <InputOTP maxLength={6} {...field} pattern={REGEXP_ONLY_DIGITS}>
+                    <InputOTP
+                      maxLength={6}
+                      {...field}
+                      pattern={REGEXP_ONLY_DIGITS}
+                    >
                       {/* <div className="flex flex-row items-center justify-center "> */}
-                        <InputOTPGroup>
-                          <InputOTPSlot index={0}  />
-                          <InputOTPSlot index={1} />
-                          <InputOTPSlot index={2} />
-                        </InputOTPGroup>
-                        <InputOTPSeparator />
-                        <InputOTPGroup>
-                          <InputOTPSlot index={3} />
-                          <InputOTPSlot index={4} />
-                          <InputOTPSlot index={5} />
-                        </InputOTPGroup>
+                      <InputOTPGroup>
+                        <InputOTPSlot index={0} />
+                        <InputOTPSlot index={1} />
+                        <InputOTPSlot index={2} />
+                      </InputOTPGroup>
+                      <InputOTPSeparator />
+                      <InputOTPGroup>
+                        <InputOTPSlot index={3} />
+                        <InputOTPSlot index={4} />
+                        <InputOTPSlot index={5} />
+                      </InputOTPGroup>
                       {/* </div> */}
                     </InputOTP>
                   </FormControl>
+                  {
+                    isSubmittingDisabled && <p className="text-red-500 text-sm">Incorrect Otp, Please try again.</p>
+                  }
                   <FormMessage className="text-center" />
                 </FormItem>
               )}
             />
-            <Button className="px-6 w-fit" type="submit">Submit</Button>
+            <Button
+              className="px-6 w-fit"
+              disabled={isSubmittingDisabled}
+              type="submit"
+            >
+              {isSubmittingForm ? (
+                <>
+                  <Loader2 className="animate-spin" /> Verifying...
+                </>
+              ) : (
+                "Verify"
+              )}
+            </Button>
           </form>
         </Form>
       </div>
