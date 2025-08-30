@@ -52,7 +52,7 @@ export async function POST(request: Request) {
         return Response.json(
             {
                 success: true,
-                message: "updated user status to accepted messages",
+                message: "updated user status to accepted messages", //check later
                 data: updatedUser,
             },
             {
