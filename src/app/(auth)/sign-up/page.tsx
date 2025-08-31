@@ -132,7 +132,7 @@ export default function SignInPage() {
                     }`}
                   >
                     {/* {usernameMessage} */}
-                     {usernameMessage}
+                    {usernameMessage}
                   </p>
 
                   <FormMessage />
@@ -160,7 +160,7 @@ export default function SignInPage() {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="password" type="password"  {...field} />
+                    <Input placeholder="password" type="password" {...field} />
                   </FormControl>
 
                   <FormMessage />
