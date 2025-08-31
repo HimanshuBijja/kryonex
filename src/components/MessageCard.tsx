@@ -23,6 +23,7 @@ import axios from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
 import { toast } from "sonner";
 import { Message } from "@/model/User";
+import { X } from "lucide-react";
 
 
 type MessageCardProps = {
@@ -53,7 +54,7 @@ export const MessageCard = ({message, onMessageDelete}: MessageCardProps) => {
           <CardAction>
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="outline">Show Dialog</Button>
+                <Button variant="outline"><X /></Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>

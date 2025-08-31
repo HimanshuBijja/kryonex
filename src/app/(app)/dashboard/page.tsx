@@ -140,7 +140,7 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 mt-4">
         {messages.map((message, index) => (
-            <MessageCard key={index} message={message} onMessageDelete={() => handleDeleteMesssage(message._id as string)} />
+            <MessageCard key={index} message={message} onMessageDelete={ handleDeleteMesssage} />
         ))}
       </div>
 
