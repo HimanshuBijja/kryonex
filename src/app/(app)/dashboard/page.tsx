@@ -1,3 +1,5 @@
+"use client"
+
 import { Message } from "@/model/User";
 import { acceptMessageSchema } from "@/schemas/acceptMessageSchema";
 import { ApiResponse } from "@/types/ApiResponse";
