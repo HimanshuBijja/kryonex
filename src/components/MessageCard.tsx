@@ -35,7 +35,7 @@ export const MessageCard = ({message, onMessageDelete}: MessageCardProps) => {
   //delete message
   const handleConfirmDelete =async () => {
     try {
-      const response = await axios.delete<ApiResponse>(`/api/delete-messages/${message._id}`);
+      const response = await axios.delete<ApiResponse>(`/api/delete-message/${message._id}`);
       toast.success(response.data.message);
       onMessageDelete(message._id as string);
     } catch (error) {
@@ -47,8 +47,9 @@ export const MessageCard = ({message, onMessageDelete}: MessageCardProps) => {
     <div>
       <Card className="w-full">
         <CardHeader>
-          <CardTitle>Card Title</CardTitle>
-          <CardDescription>Card Description</CardDescription>
+          <CardContent>
+          <p>{message.content}</p>
+        </CardContent>
           <CardAction>
             <AlertDialog>
               <AlertDialogTrigger asChild>
@@ -56,26 +57,21 @@ export const MessageCard = ({message, onMessageDelete}: MessageCardProps) => {
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                   <AlertDialogDescription>
-                    This action cannot be undone. This will permanently delete
-                    your account and remove your data from our servers.
+                    This action cannot be undone. This will permanently delete this message
+                    from your account and remove your data from our servers.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction>Continue</AlertDialogAction>
+                  <AlertDialogAction onClick={handleConfirmDelete}>Confirm</AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
           </CardAction>
         </CardHeader>
-        <CardContent>
-          <p>Card Content</p>
-        </CardContent>
-        <CardFooter>
-          <p>Card Footer</p>
-        </CardFooter>
+        
       </Card>
     </div>
   );
