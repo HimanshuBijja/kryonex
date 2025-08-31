@@ -53,7 +53,7 @@ export async function POST(request: Request) {
         return Response.json(
             {
                 success: true,
-                message: "updated user status to accepted messages", //check later
+                message: "Updated Message status ", //check later
             },
             {
                 status: 200,
