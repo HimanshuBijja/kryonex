@@ -2,12 +2,13 @@ import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/User";
 import { getServerSession, User } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/options";
+import mongoose from "mongoose";
 
 export async function DELETE(
     request: Request,
-    { params }: { params: { messageId: string } },
+    { params }: { params: { messageId: mongoose.Types.ObjectId } },
 ) {
-    const { messageId } = params;
+    const { messageId } = await params;
     await dbConnect();
     const session = await getServerSession(authOptions);
     const user: User = session?.user as User;
@@ -30,7 +31,7 @@ export async function DELETE(
                 _id: user._id,
             },
             {
-                $pull: { message: { _id: messageId } },
+                $pull: { messages: { _id: messageId as mongoose.Types.ObjectId } },
             },
         );
 
@@ -45,6 +46,8 @@ export async function DELETE(
                 },
             );
         }
+            console.log(" 🫦 Message deleted");
+
         return Response.json(
             {
                 success: true,

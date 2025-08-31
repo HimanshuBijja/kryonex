@@ -18,62 +18,74 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
 import { toast } from "sonner";
 import { Message } from "@/model/User";
 import { X } from "lucide-react";
-
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 type MessageCardProps = {
-  message: Message,
-  onMessageDelete: (messageId: string) => void
-}
+  message: Message;
+  onMessageDelete: (messageId: string) => void;
+};
 
-export const MessageCard = ({message, onMessageDelete}: MessageCardProps) => {
-
+export const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
   //delete message
-  const handleConfirmDelete =async () => {
+  const handleConfirmDelete = async () => {
     try {
-      const response = await axios.delete<ApiResponse>(`/api/delete-message/${message._id}`);
+      const response = await axios.delete<ApiResponse>(
+        `/api/delete-message/${message._id}`,
+      );
       toast.success(response.data.message);
       onMessageDelete(message._id as string);
     } catch (error) {
       toast.error("Failed to delete message");
-
     }
-  }
+  };
   return (
     <div>
-      <Card className="w-full">
-        <CardHeader>
-          <CardContent>
-          <p>{message.content}</p>
-        </CardContent>
-          <CardAction>
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button variant="outline"><X /></Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    This action cannot be undone. This will permanently delete this message
-                    from your account and remove your data from our servers.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleConfirmDelete}>Confirm</AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          </CardAction>
-        </CardHeader>
-        
-      </Card>
+      <Dialog>
+        <form>
+          <DialogTrigger asChild>
+            <Card className="w-full h-32">
+              <CardHeader>
+                <CardContent className="line-clamp-3 break-words">
+                  {message.content}
+                </CardContent>
+                <CardAction></CardAction>
+              </CardHeader>
+            </Card>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Anonymous Message</DialogTitle>
+              <DialogDescription>{message.content}</DialogDescription>
+            </DialogHeader>
+
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button variant="outline">Cancel</Button>
+              </DialogClose>
+              <DialogClose asChild>
+                <Button onClick={handleConfirmDelete}>Delete</Button>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </form>
+      </Dialog>
     </div>
   );
 };

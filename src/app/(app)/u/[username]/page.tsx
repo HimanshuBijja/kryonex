@@ -21,12 +21,19 @@ import { messageSchema } from "@/schemas/messageSchema";
 import z from "zod";
 import { toast } from "sonner";
 import { ApiResponse } from "@/types/ApiResponse";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 
-const UserPage = ({
-  params,
-}: {
-  params: Promise<{ username: string }>
-}) => {
+const UserPage = ({ params }: { params: Promise<{ username: string }> }) => {
   const {
     object,
     submit,
@@ -47,12 +54,12 @@ const UserPage = ({
     },
   });
 
-  const onSubmit = async (data : z.infer<typeof messageSchema>) => {
+  const onSubmit = async (data: z.infer<typeof messageSchema>) => {
     setIsSubmitting(true);
     try {
       const response = await axios.post<ApiResponse>("/api/send-message", {
         username,
-        content: data.content
+        content: data.content,
       });
       toast.success(response.data.message);
     } catch (error) {
@@ -66,45 +73,73 @@ const UserPage = ({
     <div>
       <div>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 ">
             <FormField
               control={form.control}
               name="content"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Message Content</FormLabel>
+                  <FormLabel>Send Message </FormLabel>
                   <FormControl>
-                    <Input placeholder="Type your message here..." {...field} />
+                    <Textarea
+                      className="h-28"
+                      placeholder="Type your message here..."
+                      {...field}
+                    />
                   </FormControl>
-                  <FormDescription>
-                    This is your public display name.
-                  </FormDescription>
+
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={isSubmitting}>Submit</Button>
+            <Button
+              className="flex justify-self-end"
+              type="submit"
+              disabled={isSubmitting}
+            >
+              Submit
+            </Button>
           </form>
         </Form>
       </div>
 
-      <div>
-        <Button
-          disabled={isGenerating}
-          variant={"default"}
-          onClick={() => submit("Messages during finals week.")}
-        >
-          Generate notifications
-        </Button>
-
-        {object?.messages?.map((message, index) => (
-          <div key={index}>
-            <Button variant={"outline"} onClick={() => form.setValue("content", message?.context ?? "")}>
-              <p>{message?.context}</p>
-            </Button>
+      <Card className="w-full my-8">
+        <CardHeader>
+          <CardTitle>Out of Ideas?</CardTitle>
+          <CardDescription>
+            Generate some message ideas with AI
+          </CardDescription>
+          <CardAction>
+            <div className="">
+              <Button
+                className="flex justify-self-end "
+                disabled={isGenerating}
+                variant={"default"}
+                onClick={() => submit("Messages during finals week.")}
+              >
+                Generate 
+              </Button>
+            </div>
+          </CardAction>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 gap-2 py-4">
+            {object?.messages?.map((message, index) => (
+              <div className="flex justify-self-center" key={index}>
+                <Button
+                  className="h-fit w-fit whitespace-normal"
+                  variant={"outline"}
+                  onClick={() =>
+                    form.setValue("content", message?.context ?? "")
+                  }
+                >
+                  {message?.context}
+                </Button>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

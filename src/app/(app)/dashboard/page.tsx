@@ -15,6 +15,15 @@ import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { MessageCard } from "@/components/MessageCard";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export default function DashboardPage() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -124,25 +133,57 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="p-4">
-      <h1>Dashboard</h1>
-
-      <div>
-        <Input value={profileUrl} readOnly />
-        <Button onClick={copyToClipboard}>Copy Profile URL</Button>
-      </div>
-
-
-      <div className="flex items-center space-x-2">
-        <Switch defaultChecked={acceptMessages} onCheckedChange={handleSwitchChange} />
-        <Label htmlFor=""></Label>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 mt-4">
+    <div className="flex flex-col gap-4">
+      <Card className="w-full ">
+        <CardHeader className="gap-4">
+          <CardTitle>Your Anonymous Link</CardTitle>
+          <CardDescription>
+            <div className="flex flex-row gap-2">
+              <Input className="truncate" value={profileUrl} readOnly />
+              <Button onClick={copyToClipboard}>Copy URL</Button>
+            </div>
+          </CardDescription>
+        </CardHeader>
+      </Card>
+      <Card className="w-full ">
+        <CardHeader >
+          <CardTitle>Allow others to send messages?</CardTitle>
+          <CardDescription>
+            When turned on, others can send you anonymous messages through your profile link.
+          </CardDescription>
+          <CardAction>
+            <div className="flex items-center space-x-2">
+              <Switch
+                defaultChecked={acceptMessages}
+                onCheckedChange={handleSwitchChange}
+              />
+              <Label htmlFor=""></Label>
+            </div>
+          </CardAction>
+        </CardHeader>
+      </Card>
+      <Card className="w-full ">
+        <CardHeader>
+          <CardTitle>Your Messages</CardTitle>
+          <CardDescription>
+            Here you can see all the messages sent to you.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2  mt-4">
         {messages.map((message, index) => (
-            <MessageCard key={index} message={message} onMessageDelete={ handleDeleteMesssage} />
+          <MessageCard
+            key={index}
+            message={message}
+            onMessageDelete={handleDeleteMesssage}
+          />
         ))}
       </div>
+        </CardContent>
+        
+      </Card>
+
+      
 
       {/* <MessageCard /> */}
     </div>
