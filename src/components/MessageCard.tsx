@@ -60,12 +60,11 @@ export const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
       <Dialog>
         <form>
           <DialogTrigger asChild>
-            <Card className="w-full h-32">
+            <Card className="w-full h-25">
               <CardHeader>
-                <CardContent className="line-clamp-3 break-words">
+                <CardContent className="line-clamp-2 break-words px-2">
                   {message.content}
                 </CardContent>
-                <CardAction></CardAction>
               </CardHeader>
             </Card>
           </DialogTrigger>

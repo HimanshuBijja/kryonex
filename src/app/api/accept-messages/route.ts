@@ -28,11 +28,12 @@ export async function POST(request: Request) {
     }
     //get user id
     const userId = user._id;
+    // const username = user.username;
     //accept messages from frontend
-    const { acceptMessages } = await request.json();
+    const { acceptMessages }: { acceptMessages: boolean } = await request.json();
     try {
-        const updatedUser = UserModel.findByIdAndUpdate(
-            userId,
+        const updatedUser =await UserModel.findByIdAndUpdate(
+            { _id: userId },
             { isAcceptingMessages: acceptMessages },
             { new: true }, // returns the updated user
         );
@@ -53,7 +54,6 @@ export async function POST(request: Request) {
             {
                 success: true,
                 message: "updated user status to accepted messages", //check later
-                data: updatedUser,
             },
             {
                 status: 200,
@@ -65,7 +65,6 @@ export async function POST(request: Request) {
             {
                 success: false,
                 message: "Failed to accept messages",
-                error: error instanceof Error ? error.message : "Unknown error",
             },
             {
                 status: 500,
@@ -124,7 +123,6 @@ export async function GET(request: Request) {
             {
                 success: false,
                 message: "Failed to retrieve use message status",
-                error: error instanceof Error ? error.message : "Unknown error",
             },
             {
                 status: 500,

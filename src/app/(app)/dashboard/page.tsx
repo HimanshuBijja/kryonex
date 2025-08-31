@@ -154,10 +154,12 @@ export default function DashboardPage() {
           <CardAction>
             <div className="flex items-center space-x-2">
               <Switch
-                defaultChecked={acceptMessages}
+                {...register("acceptMessages")}
                 onCheckedChange={handleSwitchChange}
+                checked={acceptMessages}
+                disabled={isSwitchLoading}
               />
-              <Label htmlFor=""></Label>
+              <Label htmlFor="acceptMessages">{acceptMessages ? "On" : "Off"}</Label>
             </div>
           </CardAction>
         </CardHeader>
@@ -165,12 +167,10 @@ export default function DashboardPage() {
       <Card className="w-full ">
         <CardHeader>
           <CardTitle>Your Messages</CardTitle>
-          <CardDescription>
-            Here you can see all the messages sent to you.
-          </CardDescription>
+          
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2  mt-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {messages.map((message, index) => (
           <MessageCard
             key={index}

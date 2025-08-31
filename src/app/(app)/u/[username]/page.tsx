@@ -123,7 +123,7 @@ const UserPage = ({ params }: { params: Promise<{ username: string }> }) => {
           </CardAction>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 gap-2 py-4">
+          <div className="grid grid-cols-1 gap-2 ">
             {object?.messages?.map((message, index) => (
               <div className="flex justify-self-center" key={index}>
                 <Button
