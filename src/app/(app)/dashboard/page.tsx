@@ -116,10 +116,10 @@ export default function DashboardPage() {
 
   if (!session || !session.user) {
     return (
-      <>
-        <h1>Not Authenticated</h1>
+      <div className="flex flex-col items-center justify-center h-full">
+        <h1>Not Authenticated/ Please wait for page to load</h1>
         <p>Please log in to access this page.</p>
-      </>
+      </div>
     );
   }
 

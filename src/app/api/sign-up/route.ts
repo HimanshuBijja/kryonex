@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
                 verifyCodeExpiry: expiryDate,
                 isVerified: false,
                 isAcceptingMessages: true,
-                messages: [],
+                messages: [{content: `Welcome, ${username}! This is your first message. Thank you for joining us.`}],
             });
             
             await newUser.save();
