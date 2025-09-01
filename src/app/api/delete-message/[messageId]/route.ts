@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 
 export async function DELETE(
     request: Request,
-    { params }: { params: { messageId: mongoose.Types.ObjectId } },
+    { params }: { params: Promise<{ messageId: string }> },
 ) {
     const { messageId } = await params;
     await dbConnect();
@@ -31,7 +31,7 @@ export async function DELETE(
                 _id: user._id,
             },
             {
-                $pull: { messages: { _id: messageId as mongoose.Types.ObjectId } },
+                $pull: { messages: { _id: messageId } },
             },
         );
 
