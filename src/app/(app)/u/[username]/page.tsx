@@ -43,7 +43,6 @@ const UserPage = ({ params }: { params: Promise<{ username: string }> }) => {
     schema: generateMessagesSchema,
   });
   const { username } = use(params);
-  // check if username is valid
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 

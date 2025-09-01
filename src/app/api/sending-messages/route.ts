@@ -25,10 +25,10 @@ export async function POST(req: Request) {
 
         return result.toTextStreamResponse();
     } catch (error) {
-        console.error("Error:", error);
+        // console.error("Error:", error);
         if (error instanceof APICallError) {
             const { name, statusCode, responseHeaders, message } = error;
-            console.error("API Call Error:", error.message);
+            // console.error("API Call Error:", error.message);
             return Response.json(
                 {
                     success: false,
@@ -45,7 +45,7 @@ export async function POST(req: Request) {
                 },
             );
         }
-        console.error("Error:", error);
+        // console.error("Error:", error);
         return Response.json({
             success: false,
             message: "Internal Server Error",

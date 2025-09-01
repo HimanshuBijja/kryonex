@@ -46,7 +46,7 @@ export async function DELETE(
                 },
             );
         }
-            console.log(" 🫦 Message deleted");
+            // console.log(" 🫦 Message deleted");
 
         return Response.json(
             {
@@ -58,7 +58,7 @@ export async function DELETE(
             },
         );
     } catch (error) {
-        console.log("🫦💔 delete message route :", error);
+        // console.log("🫦💔 delete message route :", error);
         return Response.json(
             {
                 success: false,

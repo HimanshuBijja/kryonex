@@ -30,11 +30,22 @@ export async function GET(request: Request) {
             {$sort: {"messages.createdAt": -1}},
             {$group : {_id : "$_id", messages: {$push: "$messages"}}}
         ]);
-        if (!foundUser || foundUser.length === 0) {
+        if (!foundUser) {
             return Response.json(
                 {
                     success: false,
-                    message: "User not found / No messages",
+                    message: "User not found ",
+                },
+                {
+                    status: 404,
+                },
+            );
+        }
+        if(foundUser.length === 0){
+            return Response.json(
+                {
+                    success: false,
+                    message: "No messages found",
                 },
                 {
                     status: 404,
@@ -46,19 +57,17 @@ export async function GET(request: Request) {
                 success: true,
                 message: "Messages retrieved successfully",
                 messages: foundUser[0].messages,
-                fullReturn : foundUser //TODO remove later
             },
             {
                 status: 200,
             },
         );
     } catch (error) {
-        console.log("error getting messages:", error);
+        // console.log("error getting messages:", error);
         return Response.json(
             {
                 success: false,
                 message: "Failed to retrieve messages",
-                error: error instanceof Error ? error.message : "Unknown error",
             },
             {
                 status: 500,

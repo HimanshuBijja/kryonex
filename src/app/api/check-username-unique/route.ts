@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
         const username = searchParams.get("username")
 
         const result = UsernameQuerySchema.safeParse({ username });
-        // console.log(result); // Log
+        
         if(!result.success){
             const usernameError = result.error.format().username?._errors || []
             return NextResponse.json({
@@ -68,7 +68,7 @@ export async function GET(request: NextRequest) {
 
 
     } catch (error) {
-        console.error("Error checking username:", error);
+        // console.error("Error checking username:", error);
         return NextResponse.json({
             success: false,
             message: "Error checking username"

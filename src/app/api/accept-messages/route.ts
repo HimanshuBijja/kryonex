@@ -53,14 +53,14 @@ export async function POST(request: Request) {
         return Response.json(
             {
                 success: true,
-                message: "Updated Message status ", //check later
+                message: "Updated Message status ", 
             },
             {
                 status: 200,
             },
         );
     } catch (error) {
-        console.log("error accepting messages:", error);
+        // console.log("error accepting messages:", error);
         return Response.json(
             {
                 success: false,
@@ -118,7 +118,7 @@ export async function GET(request: Request) {
             },
         );
     } catch (error) {
-        console.log("error getting user acceptMessages status:", error);
+        // console.log("error getting user acceptMessages status:", error);
         return Response.json(
             {
                 success: false,

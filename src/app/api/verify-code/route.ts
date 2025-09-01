@@ -62,7 +62,7 @@ export async function POST(request: Request) {
         //if code and time not expired save user
 
     } catch (error) {
-        console.log("error checking verification code:", error);
+        // console.log("error checking verification code:", error);
         return Response.json({
             success: false,
             message: "Verification code failed"

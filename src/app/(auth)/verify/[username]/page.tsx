@@ -67,9 +67,9 @@ export default function VerifyAccountPage() {
       setLastFailedOtp("");
 
       toast.success(response.data.message);
-      router.push("/sign-in"); //TODO uncomment after making sign-in page
+      router.push("/sign-in"); 
     } catch (error) {
-      console.error("Error in verify page :", error);
+      // console.error("Error in verify page :", error);
       const axiosError = error as AxiosError<ApiResponse>;
       let errorMessage =
         axiosError.response?.data.message ?? "Something went wrong";

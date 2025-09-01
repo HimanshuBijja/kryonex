@@ -83,6 +83,6 @@ export const authOptions: NextAuthOptions = {
         strategy: "jwt",
     },
     //secret NEXTAUTH_SECRET
-    secret: process.env.NEXTAUTH_SECRET, //TODO add variable in .env
+    secret: process.env.NEXTAUTH_SECRET, 
     //adapters if using prisma (not req as of now)
 };

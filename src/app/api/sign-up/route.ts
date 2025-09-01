@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
                 })
             }else{
                 const hashedPassword = await bcrypt.hash(password, 10);
-                existingUserByEmail.password = hashedPassword; // check why we are sending password here again when we send while creating user
+                existingUserByEmail.password = hashedPassword; 
                 existingUserByEmail.verifyCode = verifyCode;
                 existingUserByEmail.verifyCodeExpiry = new Date(Date.now() + 3600000);
                 await existingUserByEmail.save();
@@ -94,7 +94,7 @@ export async function POST(request: NextRequest) {
 
 
     } catch (error) {
-        console.error('Error Registering user', error);
+        // console.error('Error Registering user', error);
         return NextResponse.json(
             {
                 success: false,

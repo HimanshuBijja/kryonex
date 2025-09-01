@@ -84,10 +84,10 @@ export default function SignInPage() {
         // },
       });
       // router.push(`/verify/${data.username}`);
-      router.push(`/verify/${username}`); // check if both are same
+      router.push(`/verify/${username}`); 
       setIsSubmitting(false);
     } catch (error) {
-      console.error("Error signing up user:", error);
+      // console.error("Error signing up user:", error);
       const axiosError = error as AxiosError<ApiResponse>;
       let errorMessage =
         axiosError.response?.data.message ?? "Something went wrong";
