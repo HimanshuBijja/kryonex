@@ -86,6 +86,9 @@ importers:
       react-hook-form:
         specifier: ^7.62.0
         version: 7.62.0(react@19.1.0)
+      react-theme-switch-animation:
+        specifier: ^0.4.0
+        version: 0.4.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       resend:
         specifier: ^6.0.1
         version: 6.0.1(@react-email/render@1.2.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
@@ -1537,6 +1540,13 @@ packages:
       '@types/react':
         optional: true
 
+  react-theme-switch-animation@0.4.0:
+    resolution: {integrity: sha512-Y50y0heHz8VjF7HH07yXdRJmMV1alcOKzwPcna9/HCPPHvvAt4k8YR1uTEfDKaUImPAirzP34EqKKom3HZtINA==}
+    engines: {node: '>=18.17.0'}
+    peerDependencies:
+      react: ^17.0.0 || ^18.0.0
+      react-dom: ^17.0.0 || ^18.0.0
+
   react@19.1.0:
     resolution: {integrity: sha512-FS+XFBNvn3GTAWq26joslQgWNoFu08F4kl0J4CgdNKADkdSGXQyTCnKteIAJy96Br6YbpEU1LSzV5dYtjMkMDg==}
     engines: {node: '>=0.10.0'}
@@ -2942,6 +2952,11 @@ snapshots:
       tslib: 2.8.1
     optionalDependencies:
       '@types/react': 19.1.9
+
+  react-theme-switch-animation@0.4.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+    dependencies:
+      react: 19.1.0
+      react-dom: 19.1.0(react@19.1.0)
 
   react@19.1.0: {}
 
