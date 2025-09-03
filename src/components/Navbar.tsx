@@ -5,6 +5,10 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 import React from "react";
 import { cn } from "@/lib/utils";
+import {
+  ThemeAnimationType,
+  useModeAnimation,
+} from "react-theme-switch-animation";
 
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -32,23 +36,19 @@ export const Navbar = ({ className }: React.ComponentProps<"p">) => {
                   : user?.email) ?? "User"}
               </span>
               <span className="flex ">
-
-              <ToggleThemeButton />
-              <Button onClick={() => signOut()}>Logout</Button>
+                <ToggleThemeButton />
+                <Button onClick={() => signOut()}>Logout</Button>
               </span>
             </>
           ) : (
             <>
-            <span>
-              Using as Anonymous User
-            </span>
-            <span className="flex ">
-
-              <ToggleThemeButton />
-              <Link href="/sign-in">
-                <Button>Sign In</Button>
-              </Link>
-            </span>
+              <span>Using as Anonymous User</span>
+              <span className="flex ">
+                <ToggleThemeButton />
+                <Link href="/sign-in">
+                  <Button>Sign In</Button>
+                </Link>
+              </span>
             </>
           )}
         </div>
@@ -58,31 +58,24 @@ export const Navbar = ({ className }: React.ComponentProps<"p">) => {
 };
 
 function ToggleThemeButton() {
-  const { setTheme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
+  const { ref, toggleSwitchTheme, isDarkMode } = useModeAnimation({
+    duration: 1000, // Optional: adjust animation duration
+  });
 
   return (
     <div className="inline-block px-4 ">
-
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
+      <div>
+        <Button
+          ref={ref}
+          onClick={() => {
+            toggleSwitchTheme();
+          }}
+        >
           <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
           <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
-          <span className="sr-only">Toggle theme</span>
         </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+      </div>
     </div>
   );
 }
