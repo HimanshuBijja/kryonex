@@ -74,7 +74,7 @@ export default function SignInPage() {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username/Email</FormLabel>
+                  <FormLabel>Username/ Email</FormLabel>
                   <FormControl>
                     <Input placeholder="username / email" {...field} />
                   </FormControl>
@@ -103,13 +103,13 @@ export default function SignInPage() {
                   <Loader2 className="animate-spin" /> please wait
                 </>
               ) : (
-                "Sign Up"
+                "Login"
               )}
             </Button>
           </form>
         </Form>
         <div className="py-2 text-sm">
-          already have an account?{" "}
+          Dont have an account?{" "}
           <Link href="/sign-up">
             <span className="text-blue-500 hover:underline">Sign Up</span>
           </Link>
@@ -122,7 +122,7 @@ export default function SignInPage() {
 const Header = () => {
   return (
     <header className="pb-6 ">
-      <h1 className="text-3xl font-bold text-center">Sign Up</h1>
+      <h1 className="text-3xl font-bold text-center">Login</h1>
     </header>
   );
 };

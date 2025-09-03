@@ -25,7 +25,7 @@ import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
 
-export default function SignInPage() {
+export default function SignUpPage() {
   const [username, setUsername] = useState("");
   const [usernameMessage, setUsernameMessage] = useState("");
   const [isCheckingUsername, setIsCheckingUsername] = useState<boolean>(false);
@@ -181,7 +181,7 @@ export default function SignInPage() {
         <div className="py-2 text-sm">
           already have an account?{" "}
           <Link href="/sign-in">
-            <span className="text-blue-500 hover:underline">Sign in</span>
+            <span className="text-blue-500 hover:underline">Login</span>
           </Link>
         </div>
       </div>
